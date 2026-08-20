@@ -1,4 +1,4 @@
-# ⚡ TEX-TOOL | UIT Schedule Planner Pro
+#  TEX-TOOL | UIT Schedule Planner Pro
 
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E.svg?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
@@ -10,15 +10,15 @@
 
 ---
 
-## 🌟 Key Features
+##  Key Features
 
-- 🗓️ **Smart 10-Period Timetable Grid**: High-precision grid layout (Tiết 1 – 10, Thứ 2 – 7) with auto-fitting typography and zero layout shifts.
-- 📌 **Dedicated Unscheduled Section**: Dedicated bottom panel (`📌 Môn chưa xếp lịch / Tiết tự do`) for physical education (`PE232`), online courses, and electives.
-- 📊 **Smart Excel File Parser**: Automatically parses UIT course schedule Excel files (`.xlsx`, `.xls`), detects column aliases (`MALOP`, `TENMH`, `TENGV`, `SOTC`, `THU`, `TIET`, `NGÀY BĐ`, `NGÀY KT`), and handles merged cells.
-- ⚡ **DKHP Auto-Script Generator**: Generates 100% accurate, console-ready course registration scripts (`DangKy(monDangKy)`) tailored for `dkhp.uit.edu.vn`.
-- 📁 **Multi-Plan Management**: Create, duplicate, rename, and manage multiple schedule options (`Phương án 1, 2, 3...`) stored in IndexedDB and LocalStorage.
-- 🎨 **Minimal Ultra-Clean UI**: Seamless Dark / Light theme toggle with 0ms hardware GPU 3D pointer cursor tracking.
-- 📤 **Export & Print Support**: Export high-resolution PNG timetable screenshots and PDF print-ready layouts.
+-  **Smart 10-Period Timetable Grid**: High-precision grid layout (Tiết 1 – 10, Thứ 2 – 7) with auto-fitting typography and zero layout shifts.
+-  **Dedicated Unscheduled Section**: Dedicated bottom panel (` Môn chưa xếp lịch / Tiết tự do`) for physical education (`PE232`), online courses, and electives.
+-  **Smart Excel File Parser**: Automatically parses UIT course schedule Excel files (`.xlsx`, `.xls`), detects column aliases (`MALOP`, `TENMH`, `TENGV`, `SOTC`, `THU`, `TIET`, `NGÀY BĐ`, `NGÀY KT`), and handles merged cells.
+-  **DKHP Auto-Script Generator**: Generates 100% accurate, console-ready course registration scripts (`DangKy(monDangKy)`) tailored for `dkhp.uit.edu.vn`.
+-  **Multi-Plan Management**: Create, duplicate, rename, and manage multiple schedule options (`Phương án 1, 2, 3...`) stored in IndexedDB and LocalStorage.
+-  **Minimal Ultra-Clean UI**: Seamless Dark / Light theme toggle with 0ms hardware GPU 3D pointer cursor tracking.
+-  **Export & Print Support**: Export high-resolution PNG timetable screenshots and PDF print-ready layouts.
 
 ---
 
@@ -32,7 +32,7 @@
 
 ---
 
-## 🚀 Quick Start & Usage
+##  Quick Start & Usage
 
 ### 1. Clone the Repository
 
@@ -53,17 +53,17 @@ Then visit `http://localhost:3000`.
 
 ---
 
-## 📖 How to Use TEX-TOOL
+##  How to Use TEX-TOOL
 
 1. **Upload Excel Schedule**: Click `Tải File TKB` and select your UIT university course Excel file (`.xlsx`).
 2. **Select Classes**: Click any course in the **Lớp mở** list to add it to your schedule.
 3. **Manage Options**: Use `+ Mới` or `⧉ Nhân bản` to try out different timetable options.
-4. **Generate DKHP Script**: Switch to the `⚡ DKHP Script` tab, click `📋 Copy Script`, and paste it into the Developer Console (`F12`) on `dkhp.uit.edu.vn`.
+4. **Generate DKHP Script**: Switch to the ` DKHP Script` tab, click ` Copy Script`, and paste it into the Developer Console (`F12`) on `dkhp.uit.edu.vn`.
 5. **Export / Print**: Click `Ảnh TKB` or `In PDF` to download your finished schedule!
 
 ---
 
-## ⚡ DKHP Console Script Format
+##  DKHP Console Script Format
 
 TEX-TOOL automatically generates registration scripts matching the exact standard format:
 
@@ -82,17 +82,17 @@ DangKy(monDangKy);
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions, bug reports, and feature requests are always welcome!  
 Feel free to open an issue or submit a pull request on the [issues page](https://github.com/Tan-Vo/tex/issues).
 
 ---
 
-## 📝 License
+##  License
 
 Distributed under the MIT License.
 
 <p align="center">
-  Developed with ❤️ by <a href="https://github.com/Tan-Vo">Tan-Vo</a>
+  Developed with  by <a href="https://github.com/Tan-Vo">Tan-Vo</a>
 </p>
