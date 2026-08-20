@@ -22,7 +22,7 @@
 
 ---
 
-## 🛠️ Technology Stack
+##  Technology Stack
 
 - **Frontend**: Vanilla JavaScript (ES6+), HTML5, CSS3 Custom Design System
 - **File Parsing**: SheetJS (`xlsx.full.min.js`)
