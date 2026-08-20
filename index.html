@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEX-TOOL | UIT Schedule Planner Pro</title>
+    <meta name="description" content="TEX-TOOL — Công cụ xếp thời khóa biểu thông minh, tự động và cá nhân hóa cao cấp cho sinh viên UIT.">
+    <meta name="keywords" content="TEX-TOOL, TEX TOOL, UIT, TKB, Thời khóa biểu, Schedule Planner, DKHP UIT">
+    <meta name="author" content="TEX-TOOL">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M13 2L3 14h9l-1 8 10-12h-9l1-8z'/%3E%3C/svg%3E" type="image/svg+xml">
+
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- CDNs -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="index.css">
+</head>
+<body class="dark">
+
+    <!-- 3D PURPLE CYBER CURSOR MATCHING USER SCREENSHOT -->
+    <div id="tex3DPurpleCursor">
+        <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 2L28 14L16 18L12 28L4 2Z" fill="rgba(88, 28, 135, 0.45)" filter="blur(2px)" transform="translate(2, 3)"/>
+            <path d="M3 1L27 13L15.2 17.2L11 27L3 1Z" fill="#581C87" stroke="#3B0764" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M5.2 3.8L23.5 12.8L14.4 15.8L11.4 23.5L5.2 3.8Z" fill="url(#purpleCursorGrad)"/>
+            <path d="M6 5L21.5 12.5L14.2 15L11.8 21.5L6 5Z" fill="url(#purpleHighlightGrad)"/>
+            
+            <defs>
+                <linearGradient id="purpleCursorGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#C084FC" />
+                    <stop offset="60%" stop-color="#9333EA" />
+                    <stop offset="100%" stop-color="#6B21A8" />
+                </linearGradient>
+                <linearGradient id="purpleHighlightGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#E9D5FF" stop-opacity="0.8" />
+                    <stop offset="100%" stop-color="#A855F7" stop-opacity="0.2" />
+                </linearGradient>
+            </defs>
+        </svg>
+    </div>
+
+    <!-- TOOLTIP -->
+    <div id="custom-tooltip"></div>
+
+    <!-- HEADER -->
+    <header id="mainHeader">
+        <div class="header-logo-group">
+            <div class="logo-badge">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="url(#texGrad)" stroke="#38BDF8" stroke-width="1.2" stroke-linejoin="round"/>
+                    <defs>
+                        <linearGradient id="texGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#38BDF8" />
+                            <stop offset="50%" stop-color="#8B5CF6" />
+                            <stop offset="100%" stop-color="#EC4899" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <div class="brand-title-group">
+                <h1 class="main-title">TEX-TOOL</h1>
+                <span class="sub-title">UIT SCHEDULE PLANNER PRO</span>
+            </div>
+        </div>
+        
+        <div class="header-actions">
+            <input type="file" id="fileSchool" accept=".xlsx,.xls,.csv" style="display:none">
+            <input type="file" id="fileImportOld" accept=".xlsx" style="display:none">
+            <input type="file" id="fileJSONLoad" accept=".json" style="display:none">
+            
+            <div class="btn-group">
+                <button class="btn btn-primary btn-pill" id="btnLoadSchool" aria-label="Tải File TKB">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                    Tải File TKB
+                </button>
+                <button class="btn btn-orange btn-pill" id="btnImportOld" aria-label="Nhập TKB cũ">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                    Nhập TKB cũ
+                </button>
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn btn-warning btn-pill" id="btnLoadJSON" aria-label="Tải JSON">Tải JSON</button>
+                <button class="btn btn-success btn-pill" id="btnSaveJSON" aria-label="Lưu JSON">Lưu JSON</button>
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn btn-emerald btn-pill" id="btnExportExcel" aria-label="Xuất Excel">Xuất Excel</button>
+                <button class="btn btn-purple btn-pill" id="btnPrint" aria-label="In PDF">In PDF</button>
+                <button class="btn btn-primary btn-pill" id="btnCopyImageMini" title="Copy ảnh TKB" aria-label="Copy ảnh TKB">🖼️ Ảnh TKB</button>
+            </div>
+        </div>
+        
+        <div class="header-tools">
+            <button class="btn btn-danger btn-icon" id="btnClear" title="Xóa Lịch" aria-label="Xóa Lịch">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+            </button>
+            <button class="btn btn-primary btn-icon" id="btnUndo" title="Hoàn tác (Ctrl+Z)" aria-label="Hoàn tác">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+            </button>
+            <button class="btn btn-primary btn-icon" id="btnRedo" title="Làm lại (Ctrl+Y)" aria-label="Làm lại">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7"/></svg>
+            </button>
+            <button id="themeToggleBtn" class="theme-toggle-btn" title="Đổi giao diện" aria-label="Đổi giao diện">
+                <svg class="sun-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            </button>
+            <button class="btn btn-primary btn-icon" id="btnInfo" title="Hướng dẫn" aria-label="Hướng dẫn">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <div class="container">
+        
+        <!-- LEFT PANEL -->
+        <div class="left-panel" id="leftPanel">
+            
+            <!-- PLANS MANAGER -->
+            <div class="plans-wrapper box">
+                <div class="plans-header">
+                    <span class="box-title" style="border:none;padding:0">Phương án TKB</span>
+                    <div class="plans-actions">
+                        <button class="btn btn-primary btn-sm btn-pill" id="btnAddPlan" aria-label="Thêm phương án">+ Mới</button>
+                        <button class="btn btn-emerald btn-sm btn-pill" id="btnDuplicatePlan" aria-label="Nhân bản phương án">⧉ Nhân bản</button>
+                    </div>
+                </div>
+                <div class="plan-tabs-container" id="planTabsContainer"></div>
+            </div>
+
+            <!-- FILTER SECTION -->
+            <div class="box">
+                <div class="box-title">🔍 Tìm kiếm & Lọc thông minh</div>
+                <div class="search-area">
+                    <div class="filter-row">
+                        <div class="filter-item">
+                            <label for="cbbKhoa">Bộ môn:</label>
+                            <select id="cbbKhoa" class="filter-select">
+                                <option value="all">Tất cả môn</option>
+                                <option value="IT">Đại cương (IT)</option>
+                                <option value="SE">Phần mềm (SE)</option>
+                                <option value="CS">Khoa học MT (CS)</option>
+                                <option value="CE">Kỹ thuật MT (CE)</option>
+                                <option value="NT">Mạng MT (NT)</option>
+                                <option value="IS">Hệ thống TT (IS)</option>
+                                <option value="IE">TMĐT/KTDL (IE)</option>
+                                <option value="DS,AI">AI & KHDL (DS, AI)</option>
+                                <option value="SS">Lý luận CT (SS)</option>
+                                <option value="MA">Toán học (MA)</option>
+                                <option value="PE">Thể dục (PE)</option>
+                                <option value="EN,ENG,ENGL,PET">Tiếng Anh</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <label for="cbbGiangVien">Giảng viên:</label>
+                            <select id="cbbGiangVien"><option value="all">Tất cả GV</option></select>
+                        </div>
+                        <div class="filter-item">
+                            <label for="cbbBuoi">Buổi:</label>
+                            <select id="cbbBuoi">
+                                <option value="all">Tất cả</option>
+                                <option value="am">Sáng (T1-5)</option>
+                                <option value="pm">Chiều (T6-10)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Tìm mã lớp, tên môn, giảng viên...">
+                    <textarea id="quickAddInput" class="search-input quick-add" rows="1" placeholder="Nhập nhanh: Dán mã lớp cách nhau bằng dấu phẩy..."></textarea>
+                </div>
+            </div>
+
+            <!-- STATS BANNER -->
+            <div id="statsBanner" class="stats-banner">Tổng môn: 0 | Tổng tín chỉ: 0 (Khuyến nghị: 14-24)</div>
+
+            <!-- AVAILABLE CLASSES TABLE -->
+            <div class="box main-table-box" id="boxAvailable">
+                <div class="box-title">📋 Lớp mở — Click để thêm</div>
+                <div class="list-container">
+                    <table class="ui-table">
+                        <thead>
+                            <tr>
+                                <th>MÃ LỚP</th><th>TÊN MÔN</th><th>GIẢNG VIÊN</th><th>THỨ</th><th>TIẾT</th><th>TC</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbAvailable">
+                            <tr><td colspan="6" class="empty-state">Vui lòng tải File TKB trường để bắt đầu!</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- RESIZER HORIZONTAL -->
+            <div class="resizer-horizontal" id="resizerH" title="Kéo để chỉnh độ cao danh sách lớp"></div>
+
+            <!-- REGISTERED CLASSES TABLE -->
+            <div class="box main-table-box" id="boxRegistered">
+                <div class="box-title success-title">✅ Lớp đã đăng ký — Click để xóa</div>
+                <div class="list-container">
+                    <table class="ui-table">
+                        <thead>
+                            <tr>
+                                <th>MÃ LỚP</th><th>TÊN MÔN</th><th>THỨ</th><th>TIẾT</th><th>TC</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbRegistered"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TABBED TOOLS PANEL (DKHP SCRIPT & EXPORT) -->
+            <div class="box tools-tabbed-box" id="dkhpPanel">
+                <div class="box-title tools-tabbed-title">
+                    <div class="tools-segmented-tabs">
+                        <button class="tool-tab-btn active" id="tabDkhpBtn">⚡ DKHP Script</button>
+                        <button class="tool-tab-btn" id="tabExportBtn">📋 Xuất mã lớp</button>
+                    </div>
+                    <select id="exportDelimiter" class="export-select" style="display:none" aria-label="Ký tự phân cách">
+                        <option value=", ">Phẩy (,)</option>
+                        <option value="; ">Chấm phẩy (;)</option>
+                        <option value="newline">Xuống dòng</option>
+                    </select>
+                </div>
+                
+                <!-- TAB 1: DKHP SCRIPT GENERATOR -->
+                <div class="tool-tab-content active" id="tabDkhpContent">
+                    <div class="dkhp-info">
+                        <span class="dkhp-description">Tự động đăng ký trên <strong>dkhp.uit.edu.vn</strong>:</span>
+                        <span class="dkhp-class-count"><span id="dkhpClassCount">0</span> lớp</span>
+                    </div>
+                    <div class="script-preview" id="scriptPreview">
+                        <code>// Chọn lớp để tạo script...</code>
+                    </div>
+                    <div class="dkhp-actions">
+                        <button class="btn btn-primary btn-pill btn-sm" id="btnCopyScript">📋 Copy Script</button>
+                        <button class="btn btn-emerald btn-pill btn-sm" id="btnCopyBookmarklet">🔖 Bookmarklet</button>
+                        <button class="btn btn-warning btn-pill btn-sm" id="btnDkhpHelp">❓ Hướng dẫn</button>
+                    </div>
+                </div>
+
+                <!-- TAB 2: EXPORT CODES -->
+                <div class="tool-tab-content" id="tabExportContent" style="display:none">
+                    <textarea id="txtExportCodes" readonly rows="2" class="export-textarea" placeholder="Chưa có môn nào..."></textarea>
+                    <button id="btnCopyCodes" class="btn btn-primary btn-pill btn-sm btn-copy" aria-label="Copy mã lớp">📋 Copy mã lớp</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESIZER VERTICAL -->
+        <div class="resizer-vertical" id="resizerV" title="Kéo thả để chỉnh độ rộng cột bên trái"></div>
+
+        <!-- RIGHT PANEL -->
+        <div class="right-panel">
+            <div class="timetable-wrapper" id="timetableGrid">
+                <!-- Rendered via JS -->
+            </div>
+            <!-- UNSCHEDULED / FREE PERIOD CLASSES SECTION -->
+            <div class="box free-classes-box" id="freeClassesBox" style="display:none;">
+                <div class="box-title warning-title">📌 Môn chưa xếp lịch / Tiết tự do</div>
+                <div class="free-classes-container" id="freeClassesContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INFO MODAL -->
+    <div id="infoModal" class="modal-overlay" style="display:none" role="dialog" aria-modal="true" aria-labelledby="infoModalTitle">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="infoModalTitle" class="modal-title">TEX-TOOL | Hướng dẫn sử dụng</h2>
+                <button id="btnCloseModal" class="btn-close-modal" aria-label="Đóng">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3>📖 Hướng dẫn thao tác</h3>
+                <ol>
+                    <li><strong>Tải File TKB:</strong> Bấm vào nút "Tải File TKB" để upload file Excel/CSV danh sách lớp mở của trường.</li>
+                    <li><strong>Lọc & Tìm kiếm:</strong> Sử dụng ô tìm kiếm và các bộ lọc (Khoa, Giảng viên, Buổi) để tìm lớp học mong muốn.</li>
+                    <li><strong>Thêm môn:</strong> Click vào một lớp trong bảng "Lớp mở" (bên trái) để thêm vào TKB (bên phải). Cảnh báo nếu lớp bị trùng giờ. Click lại vào môn đã đăng ký để xóa.</li>
+                    <li><strong>Xuất TKB:</strong> Bạn có thể In PDF, Xuất Excel, Lưu file JSON (để backup) hoặc Copy trực tiếp hình ảnh TKB.</li>
+                </ol>
+
+                <h3>⚡ TEX-TOOL DKHP Script Generator</h3>
+                <p>Công cụ hỗ trợ tạo đoạn mã JavaScript cá nhân hóa để tự động chọn lớp trên trang Đăng ký học phần.</p>
+                <ul>
+                    <li>Lên cấu hình thời khóa biểu bạn mong muốn.</li>
+                    <li>Nhấn nút "📋 Copy Script" ở panel TEX-TOOL DKHP Generator.</li>
+                    <li>Đăng nhập dkhp.uit.edu.vn, mở DevTools (F12) tab Console.</li>
+                    <li>Paste và Enter để script tự động thêm môn!</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- DKHP HELP MODAL -->
+    <div id="dkhpHelpModal" class="modal-overlay" style="display:none" role="dialog" aria-modal="true" aria-labelledby="dkhpHelpTitle">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="dkhpHelpTitle" class="modal-title">⚡ TEX-TOOL | Hướng dẫn DKHP Script</h2>
+                <button id="btnCloseDkhpHelp" class="btn-close-modal" aria-label="Đóng">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3>Các bước thực hiện</h3>
+                <ol>
+                    <li>Xếp xong Thời khóa biểu với các lớp bạn cần đăng ký trên trang TEX-TOOL.</li>
+                    <li>Nhấn nút <strong>"📋 Copy Script"</strong> trong panel "DKHP Script Generator". Mã sẽ được lưu vào Clipboard.</li>
+                    <li>Truy cập và <strong>đăng nhập</strong> vào trang <a href="https://dkhp.uit.edu.vn" target="_blank">dkhp.uit.edu.vn</a>.</li>
+                    <li>Nhấn phím <code>F12</code> (hoặc <code>Ctrl+Shift+I</code>) để mở Developer Tools, chuyển sang tab <strong>Console</strong>.</li>
+                    <li>Dán (Paste) đoạn script vừa copy vào Console và nhấn <code>Enter</code>.</li>
+                    <li>Đợi script chạy xong. Nó sẽ tự động tìm các mã lớp trong bảng và click chọn giúp bạn.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="utils.js"></script>
+    <script src="timetable.js"></script>
+    <script src="dkhp-generator.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
